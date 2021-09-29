@@ -25,9 +25,150 @@
     </style>
 </head>
 <body>
-    <div id="forEach"><p>method forEach -</p></div>
-    <div id="filter"><p>method filter -</p></div>
-    <div id="map"><p>method map -</p></div>
-    <script src="index.js"></script>
+    <script>
+        
+        let array = [1,2,3,4,5,6,7,8,9,10]
+
+
+        //method FOREACH
+
+        Array.prototype.forEach2 = function(callback, thisArgs) {
+            if(this == null) {
+                throw new Error('cant iterate over null or undefined')
+            }
+            let context = this
+            let obj = Object(this)
+            let len = obj.length
+            let i = 0
+            if(arguments.length > 1) {
+                context = thisArgs
+            }
+            if(typeof callback !== 'function') {
+
+                throw new Error('callback is not a function')
+            }
+
+            for(; i < len; i++) {
+                if(i in obj) {
+                    callback.call(context, obj[i], i, obj)
+                    
+                }
+            }
+
+        }
+
+
+        //method FILTER
+
+        Array.prototype.filter2 = function(callback, thisArgs) {
+
+            if(this == null) {
+                throw new Error("Can't iterate over undefined or null");
+            }
+            let context = this
+
+            let obj = Object(this)
+
+            if(arguments.length > 1) {
+                context = thisArgs
+            }
+
+            if(typeof callback !== 'function') {
+                throw new Error("Callback is not a function")
+            }
+
+            let len = obj.length
+
+            let result = []
+
+            for(let i = 0; i < len; i++) {
+                if(i in obj) {
+                    if(callback.call(context, obj[i], i, obj)) {
+                        result.push(obj[i])
+                    }
+                }
+            }
+
+            return result
+        }
+
+        //method MAP
+
+        Array.prototype.map2 = function(callback, thisArg) {
+            if(this == null) {
+                throw new Error("Can't iterate over undefined or null")
+            }
+
+            let context = this
+            
+            let obj = Object(this)
+
+            if(arguments.length > 1) {
+                context = thisArg
+            }
+
+            if(typeof callback !== 'function') {
+                throw new Error("Callback is not a function")
+            }
+
+            let len = obj.length
+
+            let result = []
+
+            let i = 0
+
+            for(; i < len; i++) {
+                if(i in obj) {
+                    result[i] = callback.call(context, obj[i], i, obj)
+                }
+            }
+
+            return result
+        }
+
+
+        //method REDUCE
+
+        Array.prototype.reduce2 = function(callback, initialValue) {
+            if(this == null) {
+                throw new Error("Can't over undefined or null")
+            }
+
+            let result
+            let i = 0
+            let obj = Object(this)
+            let len = obj.length
+
+            if(typeof callback !== 'function') {
+                throw new Error("Callback is not a function")
+            }
+
+            if(arguments.length == 2) {
+                result = initialValue
+            }else {
+                if(len === 0) {
+                    throw new Error("Reduce of empty array with no initial value")
+                }
+                result = obj[i]
+                i++
+            }
+
+            for(; i < len; i++) {
+                if(i in obj) {
+                    result = callback(result, obj[i], i, obj)
+                }
+            }
+
+            return result    
+        }
+
+
+        console.log(array);
+        array.forEach2((el) => console.log(el))
+        console.log(array.filter2((el) => el > 5 ? true: null));
+        console.log(array.map2((el) => el * 2));
+        console.log(array.reduce2((acc, el) => acc + el));
+
+    </script>
 </body>
 </html>
